@@ -33,6 +33,24 @@
             padding: 10px 12px;
             margin-bottom: 14px;
         }
+        .password-field {
+            position: relative;
+        }
+        .password-field input {
+            padding-right: 88px;
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            border: 0;
+            background: transparent;
+            color: #0f766e;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 6px 8px;
+        }
         .btn {
             width: 100%;
             border: 0;
@@ -64,16 +82,36 @@
             @error('email') <div class="error">{{ $message }}</div> @enderror
 
             <label for="password">Password</label>
-            <input id="password" name="password" type="password" required>
+            <div class="password-field">
+                <input id="password" name="password" type="password" required>
+                <button class="toggle-password" type="button" data-target="password" aria-label="Lihat password" aria-pressed="false">Lihat</button>
+            </div>
             @error('password') <div class="error">{{ $message }}</div> @enderror
 
             <label for="password_confirmation">Konfirmasi Password</label>
-            <input id="password_confirmation" name="password_confirmation" type="password" required>
+            <div class="password-field">
+                <input id="password_confirmation" name="password_confirmation" type="password" required>
+                <button class="toggle-password" type="button" data-target="password_confirmation" aria-label="Lihat konfirmasi password" aria-pressed="false">Lihat</button>
+            </div>
 
             <button class="btn" type="submit">Daftar</button>
         </form>
 
         <a class="link" href="{{ route('login') }}">Sudah punya akun? Login</a>
     </main>
+
+    <script>
+        document.querySelectorAll('.toggle-password').forEach((button) => {
+            button.addEventListener('click', () => {
+                const passwordInput = document.getElementById(button.dataset.target);
+                const isHidden = passwordInput.type === 'password';
+
+                passwordInput.type = isHidden ? 'text' : 'password';
+                button.textContent = isHidden ? 'Sembunyikan' : 'Lihat';
+                button.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Lihat password');
+                button.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
+            });
+        });
+    </script>
 </body>
 </html>

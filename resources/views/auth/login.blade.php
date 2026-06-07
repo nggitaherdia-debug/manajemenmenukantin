@@ -33,6 +33,24 @@
             padding: 10px 12px;
             margin-bottom: 14px;
         }
+        .password-field {
+            position: relative;
+        }
+        .password-field input {
+            padding-right: 88px;
+        }
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            border: 0;
+            background: transparent;
+            color: #0f766e;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 6px 8px;
+        }
         .check { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; color: #334155; }
         .check input { width: auto; margin: 0; }
         .btn {
@@ -62,7 +80,10 @@
             @error('email') <div class="error">{{ $message }}</div> @enderror
 
             <label for="password">Password</label>
-            <input id="password" name="password" type="password" required>
+            <div class="password-field">
+                <input id="password" name="password" type="password" required>
+                <button class="toggle-password" type="button" aria-label="Lihat password" aria-pressed="false">Lihat</button>
+            </div>
             @error('password') <div class="error">{{ $message }}</div> @enderror
 
             <label class="check">
@@ -75,5 +96,19 @@
 
         <a class="link" href="{{ route('register') }}">Belum punya akun? Daftar</a>
     </main>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const togglePassword = document.querySelector('.toggle-password');
+
+        togglePassword.addEventListener('click', () => {
+            const isHidden = passwordInput.type === 'password';
+
+            passwordInput.type = isHidden ? 'text' : 'password';
+            togglePassword.textContent = isHidden ? 'Sembunyikan' : 'Lihat';
+            togglePassword.setAttribute('aria-label', isHidden ? 'Sembunyikan password' : 'Lihat password');
+            togglePassword.setAttribute('aria-pressed', isHidden ? 'true' : 'false');
+        });
+    </script>
 </body>
 </html>
